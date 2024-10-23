@@ -2,7 +2,7 @@ import java.util.*;
 
 public class FileSimulation {
     public static void main (String[] args) {
-        Node node = new Node("COSC 439", "Folder", "Folder").addChild(new Node("Homework", "Folder", "Folder")).addChild(new Node("Syllabus", "File", "PDF"));
+        Node node = new Node("COSC_439", "Folder").addChild(new Node("Homework", "Folder")).addChild(new Node("Syllabus.pdf", "File"));
 
         Scanner scanner = new Scanner(System.in);
 
@@ -11,7 +11,9 @@ public class FileSimulation {
         Node currentNode = node;
 
         while (cont) {
-            System.out.print("root: ");
+            System.out.print("root:");
+            currentNode.printWhere(currentNode);
+            System.out.print("# ");
             String input = scanner.nextLine();
             String arr[] = input.split(" ", 2);  //array with first word and second (ex. 'cd' and 'Homework')
             String first = arr[0];
@@ -46,18 +48,6 @@ public class FileSimulation {
                         System.out.println("No directory specified");
                     } 
                     break;
-                case "file":
-                    if (arr.length > 1) {
-                        Node fileNode = currentNode.findChildByName(second);
-                        if (fileNode != null) {
-                            System.out.println("This is a " + fileNode.type);
-                        } else {
-                            System.out.println("Name not found.");
-                        }
-                    } else {
-                        System.out.println("No name specified.");
-                    } 
-                    break;
                 case "rm":
                     if (arr.length > 1) {
                         Node delNode = currentNode.findChildByName(second);
@@ -80,8 +70,19 @@ public class FileSimulation {
                     break;
                 case "pwd":
                     currentNode.printWhere(currentNode);
+                    System.out.println();
+                    break;
+                case "touch":
+                    currentNode.addChild(new Node(second, "File"));
+                    break;
+                case "mkdir":
+                    currentNode.addChild(new Node(second, "Folder"));
                     break;
                 case "help":
+                    System.out.println("");
+                    break;
+                default:
+                    System.out.println("Unknown command. Type 'help' for list of commands");
                     break;
             }
         }
@@ -91,15 +92,13 @@ public class FileSimulation {
 class Node {
     public String name;
     public String use;
-    public String type;
     public List<Node> children;
     public Node parent;
 
-    public Node (String name, String use, String type) {
+    public Node (String name, String use) {
         children = new ArrayList<>();
         this.name = name;
         this.use = use;
-        this.type = type;
     }
 
     public Node addChild(Node node) {
@@ -142,7 +141,7 @@ class Node {
         for (int i = parents.size() - 1; i >= 0; i--) {
             System.out.print(parents.get(i) + "/");
         }
-        System.out.println();
+       
     }
 
 }
