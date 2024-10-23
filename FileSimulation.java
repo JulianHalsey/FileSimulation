@@ -29,11 +29,18 @@ public class FileSimulation {
                     break;
                 case "cd":
                     if (arr.length > 1) {
-                        Node nextNode = currentNode.findChildByName(second);
-                        if ((nextNode != null) && ((nextNode.use).equals("Folder"))) {
-                            currentNode = nextNode;
+                        if (second.equals("..")) {     //user inputs "cd .." to move to parent directory
+                            Node nextNode = currentNode.parent;
+                            if (nextNode != null) {
+                                currentNode = nextNode;
+                            }
                         } else {
-                            System.out.println("Directory not found.");
+                            Node nextNode = currentNode.findChildByName(second);
+                            if ((nextNode != null) && ((nextNode.use).equals("Folder"))) {
+                                currentNode = nextNode;
+                            } else {
+                                System.out.println("Directory not found.");
+                            }
                         }
                     } else {
                         System.out.println("No directory specified.");
@@ -54,6 +61,8 @@ public class FileSimulation {
                 case "rm":
                     break;
                 case "rmdir":
+                    break;
+                case "pwd":
                     break;
                 case "help":
                     break;
